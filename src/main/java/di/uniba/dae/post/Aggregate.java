@@ -34,7 +34,7 @@
  */
 package di.uniba.dae.post;
 
-import di.uniba.dae.processing.ProcessMetaDumpMTV2;
+import di.uniba.dae.processing.ProcessDump;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.io.BufferedReader;
@@ -61,9 +61,9 @@ import org.apache.commons.cli.ParseException;
  *
  * @author pierpaolo
  */
-public class AggregateDataSingle {
+public class Aggregate {
 
-    private static final Logger LOG = Logger.getLogger(ProcessMetaDumpMTV2.class.getName());
+    private static final Logger LOG = Logger.getLogger(ProcessDump.class.getName());
 
     static Options options;
 
@@ -120,17 +120,17 @@ public class AggregateDataSingle {
         long ko = 0;
         LOG.log(Level.INFO, "Processing file: {0}", inputFile.getName());
         Map<String, Map<Integer, Map<String, SurfaceContext>>> map = new Object2ObjectOpenHashMap<>();
-        BufferedReader in = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(inputFile))));
+        BufferedReader in = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(inputFile)), "UTF-8"));
         try {
             while (in.ready()) {
                 String line = in.readLine();
                 String[] split = line.split("\t");
-                if (split.length == 5) {
+                if (split.length == 6) {
                     try {
-                        Map<Integer, Map<String, SurfaceContext>> mapTarget = map.get(split[1]); //target
+                        Map<Integer, Map<String, SurfaceContext>> mapTarget = map.get(split[2]); //target
                         if (mapTarget == null) {
                             mapTarget = new Int2ObjectOpenHashMap<>();
-                            map.put(split[1], mapTarget);
+                            map.put(split[2], mapTarget);
                         }
                         int year = Integer.parseInt(split[0]); //year
                         Map<String, SurfaceContext> mapSurface = mapTarget.get(year);
@@ -138,20 +138,24 @@ public class AggregateDataSingle {
                             mapSurface = new Object2ObjectOpenHashMap<>();
                             mapTarget.put(year, mapSurface);
                         }
-                        SurfaceContext ctx = mapSurface.get(split[2]); //surface
+                        SurfaceContext ctx = mapSurface.get(split[3]); //surface
                         if (ctx == null) {
                             ctx = new SurfaceContext();
-                            mapSurface.put(split[2], ctx);
+                            mapSurface.put(split[3], ctx);
                         }
                         //add info to context
                         ctx.incrementCounter();
-                        String[] cs = split[3].split("\\s+");
-                        for (String w : cs) {
-                            ctx.addWord(w);
+                        if (!split[4].equals("#")) {
+                            String[] cs = split[4].split("\\s");
+                            for (String w : cs) {
+                                ctx.addWord(w);
+                            }
                         }
-                        cs = split[4].split("\\s+");
-                        for (String w : cs) {
-                            ctx.addWord(w);
+                        if (!split[5].equals("#")) {
+                            String[] cs = split[5].split("\\s");
+                            for (String w : cs) {
+                                ctx.addWord(w);
+                            }
                         }
                         ok++;
                     } catch (Exception ex) {
@@ -169,7 +173,7 @@ public class AggregateDataSingle {
         }
         LOG.log(Level.INFO, "Processed file: {0}, OK = {1}, KO = {2}", new Object[]{outputFile.getName(), ok, ko});
         LOG.log(Level.INFO, "Save file: {0}", outputFile.getName());
-        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(outputFile))));
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(outputFile)), "UTF-8"));
         for (String target : map.keySet()) {
             out.append("#T\t").append(target);
             out.newLine();

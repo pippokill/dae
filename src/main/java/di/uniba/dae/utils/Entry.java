@@ -46,23 +46,44 @@ public class Entry implements Comparable<Entry> {
 
     private int count;
 
+    /**
+     *
+     * @param key
+     * @param count
+     */
     public Entry(String key, int count) {
         this.key = key;
         this.count = count;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     *
+     * @param key
+     */
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCount() {
         return count;
     }
 
+    /**
+     *
+     * @param count
+     */
     public void setCount(int count) {
         this.count = count;
     }

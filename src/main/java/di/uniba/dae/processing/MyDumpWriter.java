@@ -32,7 +32,6 @@
  * GNU GENERAL PUBLIC LICENSE - Version 3, 29 June 2007
  *
  */
-
 package di.uniba.dae.processing;
 
 import de.tudarmstadt.ukp.wikipedia.mwdumper.importer.DumpWriter;
@@ -63,13 +62,13 @@ import java.util.zip.GZIPOutputStream;
  * navigazione del file xml.
  *
  */
-public class MyDumpWriterV3 implements DumpWriter {
+public class MyDumpWriter implements DumpWriter {
 
     private final BufferedWriter out;
     private final SimpleWikiConfiguration config;
 
     //WINDOW_OF_CONTEXT è il numero di parole che il parser estrare dalla parte sx e dx dell'internal link
-    private int WINDOW_OF_CONTEXT = 10;
+    private int windowSize = 10;
 
     private PageTitle pageTitle;
     private int pageId_sing;
@@ -79,7 +78,15 @@ public class MyDumpWriterV3 implements DumpWriter {
     private int numberOfRevision;
     private Revision lastRevision = null;
 
-    public MyDumpWriterV3(File outputfile, int diff) throws IOException, FileNotFoundException, JAXBException {
+    /**
+     *
+     * @param outputfile
+     * @param diff
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws JAXBException
+     */
+    public MyDumpWriter(File outputfile, int diff) throws IOException, FileNotFoundException, JAXBException {
         this(outputfile, diff, false);
     }
 
@@ -87,12 +94,18 @@ public class MyDumpWriterV3 implements DumpWriter {
      * Costruttore della classe MyDumpWriter che setta a 0 il numero di pagine
      * totali, analizzate e configura i settaggi del file mediawiki.
      *
+     * @param outputfile
+     * @param diff
+     * @param compress
+     * @throws java.io.IOException
+     * @throws java.io.FileNotFoundException
+     * @throws javax.xml.bind.JAXBException
      */
-    public MyDumpWriterV3(File outputfile, int diff, boolean compress) throws IOException, FileNotFoundException, JAXBException {
+    public MyDumpWriter(File outputfile, int diff, boolean compress) throws IOException, FileNotFoundException, JAXBException {
         if (compress) {
-            out = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(outputfile))));
+            out = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(outputfile)), "UTF-8"));
         } else {
-            out = new BufferedWriter(new FileWriter(outputfile));
+            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile), "UTF-8"));
         }
         config = new SimpleWikiConfiguration(SWEBLE_CONFIG);
         numberOfRevision = 0;
@@ -100,29 +113,47 @@ public class MyDumpWriterV3 implements DumpWriter {
         total_number_of_pages = diff;
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     @Override
     public void close() throws IOException {
         out.close();
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     @Override
     public void writeStartWiki() throws IOException {
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     @Override
     public void writeEndWiki() throws IOException {
     }
 
+    /**
+     *
+     * @param info
+     * @throws IOException
+     */
     @Override
     public void writeSiteinfo(Siteinfo info) throws IOException {
     }
 
     /**
      * Metodo che viene chiamato ogni volta che si incontra l'inizio di una
-     * nuova pagina. Aumenta di 1 il contatore delle pagine visitate e setta le
+     * nuova pagina.Aumenta di 1 il contatore delle pagine visitate e setta le
      * variabili globali che indicano la pagina che si sta analizzando.
      *
      * @param page page that is starting to analyze
+     * @throws java.io.IOException
      *
      */
     @Override
@@ -141,8 +172,9 @@ public class MyDumpWriterV3 implements DumpWriter {
 
     /**
      * writeEndPage() viene chiamato quando la pagina che si sta analizzando
-     * viene chiusa. Setta a null le variabili della pagina in utilizzo.
+     * viene chiusa.Setta a null le variabili della pagina in utilizzo.
      *
+     * @throws java.io.IOException
      */
     @Override
     public void writeEndPage() throws IOException {
@@ -208,8 +240,9 @@ public class MyDumpWriterV3 implements DumpWriter {
                 List<Token> tokens = (List<Token>) v.go(cp);
                 for (int i = 0; i < tokens.size(); i++) {
                     if (tokens.get(i) instanceof AnchorToken) {
-                        //String to write in the file.
-                        /*StringBuilder str_to_write = new StringBuilder();
+                        if (!Utils.isSpecialPage(((AnchorToken) tokens.get(i)).getTarget())) {
+                            //String to write in the file.
+                            /*StringBuilder str_to_write = new StringBuilder();
                         str_to_write.append(pageId_sing).append("\t").
                                 append(Title).append("\t").
                                 append(Integer.toString(Id_revision)).append("\t").
@@ -220,13 +253,25 @@ public class MyDumpWriterV3 implements DumpWriter {
                                 append(extractRight(tokens, i)).append("\t");
                         out.append(str_to_write);
                         out.newLine();*/
-                        
-                        out.append(Year_of_revision).append("\t").
-                                append(((AnchorToken) tokens.get(i)).getTarget()).append("\t").
-                                append(tokens.get(i).getSurface()).append("\t").
-                                append(extractLeft(tokens, i)).append("\t").
-                                append(extractRight(tokens, i)).append("\t");
-                        out.newLine();
+
+                            out.append(Year_of_revision).append("\t").
+                                    append(String.valueOf(pageId_sing)).append("\t").
+                                    append(((AnchorToken) tokens.get(i)).getTarget().replace("\n", "")).append("\t").
+                                    append(tokens.get(i).getSurface().replace("\n", "")).append("\t");
+                            String leftc = extractLeft(tokens, i);
+                            if (leftc.length() > 0) {
+                                out.append(leftc).append("\t");
+                            } else {
+                                out.append("#\t");
+                            }
+                            String rightc = extractRight(tokens, i);
+                            if (rightc.length() > 0) {
+                                out.append(rightc).append("\t");
+                            } else {
+                                out.append("#\t");
+                            }
+                            out.newLine();
+                        }
                     }
                 }
                 out.flush();
@@ -239,7 +284,7 @@ public class MyDumpWriterV3 implements DumpWriter {
 
     private String extractLeft(List<Token> tokens, int o) throws IOException {
         StringBuilder sb = new StringBuilder();
-        int s = Math.max(0, o - WINDOW_OF_CONTEXT);
+        int s = Math.max(0, o - windowSize);
         for (int i = s; i < o; i++) {
             sb.append(tokens.get(i).getSurface()).append(" ");
         }
@@ -248,11 +293,27 @@ public class MyDumpWriterV3 implements DumpWriter {
 
     private String extractRight(List<Token> tokens, int o) throws IOException {
         StringBuilder sb = new StringBuilder();
-        int s = Math.min(tokens.size() - 1, o + WINDOW_OF_CONTEXT);
+        int s = Math.min(tokens.size() - 1, o + windowSize);
         for (int i = o + 1; i <= s; i++) {
             sb.append(tokens.get(i).getSurface()).append(" ");
         }
         return Utils.stringListToString(Utils.tokenize(sb.toString()));
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getWindowSize() {
+        return windowSize;
+    }
+
+    /**
+     *
+     * @param windowSize
+     */
+    public void setWindowSize(int windowSize) {
+        this.windowSize = windowSize;
     }
 
 }

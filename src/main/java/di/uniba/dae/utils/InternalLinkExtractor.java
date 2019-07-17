@@ -62,6 +62,9 @@ public class InternalLinkExtractor extends AstVisitor {
 
     private static final Logger LOG = Logger.getLogger(InternalLinkExtractor.class.getName());
 
+    /**
+     *
+     */
     public InternalLinkExtractor() {
         SimpleWikiConfiguration config = null;
         try {
@@ -82,6 +85,11 @@ public class InternalLinkExtractor extends AstVisitor {
         this.config = config;
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     @Override
     protected boolean before(AstNode node) {
         // This method is called by go() before visitation starts
@@ -89,16 +97,32 @@ public class InternalLinkExtractor extends AstVisitor {
         return super.before(node);
     }
 
+    /**
+     *
+     * @param node
+     * @param result
+     * @return
+     */
     @Override
     protected Object after(AstNode node, Object result) {
         return anchors;
     }
 
     // =========================================================================
+
+    /**
+     *
+     * @param n
+     */
     public void visit(AstNode n) {
         iterate(n);
     }
 
+    /**
+     *
+     * @param inLink
+     * @throws IOException
+     */
     public void visit(InternalLink inLink) throws IOException {
         if (inLink.getTitle().getContent().size() > 0) {
 

@@ -64,6 +64,13 @@ public class ProcessingThread extends Thread {
 
     private final boolean delete;
 
+    /**
+     *
+     * @param queue
+     * @param outDir
+     * @param pset
+     * @param delete
+     */
     public ProcessingThread(BlockingQueue<File> queue, String outDir, Set<String> pset, boolean delete) {
         this.queue = queue;
         this.outDir = outDir;
@@ -72,6 +79,12 @@ public class ProcessingThread extends Thread {
         this.delete = delete;
     }
 
+    /**
+     *
+     * @param queue
+     * @param outDir
+     * @param pset
+     */
     public ProcessingThread(BlockingQueue<File> queue, String outDir, Set<String> pset) {
         this.queue = queue;
         this.outDir = outDir;
@@ -88,7 +101,7 @@ public class ProcessingThread extends Thread {
                 if (pfile.getName().equals("dummyfile")) {
                     run = false;
                 } else if (!pset.contains(pfile.getAbsolutePath())) {
-                    MyDumpWriterV3 writer = null;
+                    MyDumpWriter writer = null;
                     try {
                         LOG.log(Level.INFO, "Processing dump: {0}", pfile.getName());
                         File output = new File(outDir + "/csv/" + pfile.getName() + ".csv.gz");
@@ -97,7 +110,7 @@ public class ProcessingThread extends Thread {
                         } else {
                             BZip2CompressorInputStream bzIn = new BZip2CompressorInputStream(new FileInputStream(pfile));
                             int diff = Utils.getPagesNumbers(pfile);
-                            writer = new MyDumpWriterV3(output, diff, true);
+                            writer = new MyDumpWriter(output, diff, true);
                             MyXmlDumpReader reader = new MyXmlDumpReader(bzIn, writer);
                             reader.readDump();
                             bzIn.close();

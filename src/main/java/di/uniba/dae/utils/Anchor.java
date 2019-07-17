@@ -45,6 +45,11 @@ public class Anchor {
 
     private String link;
 
+    /**
+     *
+     * @param surface
+     * @param link
+     */
     public Anchor(String surface, String link) {
         this.surface = surface;
         this.link = link;
@@ -79,18 +84,34 @@ public class Anchor {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getLink() {
         return link;
     }
 
+    /**
+     *
+     * @param link
+     */
     public void setLink(String link) {
         this.link = link;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSurface() {
         return surface;
     }
 
+    /**
+     *
+     * @param surface
+     */
     public void setSurface(String surface) {
         this.surface = surface;
     }

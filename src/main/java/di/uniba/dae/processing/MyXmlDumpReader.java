@@ -48,7 +48,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -108,10 +107,8 @@ public class MyXmlDumpReader extends DefaultHandler {
             //factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
             SAXParser parser = factory.newSAXParser();
             parser.parse(input, this);
-        } catch (ParserConfigurationException e) {
-            throw (IOException) new IOException(e.getMessage()).initCause(e);
-        } catch (SAXException e) {
-            throw (IOException) new IOException(e.getMessage()).initCause(e);
+        } catch (ParserConfigurationException | SAXException e) {
+            throw new IOException(e);
         }
         writer.close();
     }
@@ -171,6 +168,7 @@ public class MyXmlDumpReader extends DefaultHandler {
         endElements.put("username", "username");
     }
 
+    @Override
     public void startElement(String uri, String localname, String qName, Attributes attributes) throws SAXException {
         // Clear the buffer for character data; we'll initialize it
         // if and when character data arrives -- at that point we
@@ -192,20 +190,20 @@ public class MyXmlDumpReader extends DefaultHandler {
                 return;
             }
             // frequent tags:
-            if (qName == "revision") {
+            if (qName.equals("revision")) {
                 openRevision();
-            } else if (qName == "contributor") {
+            } else if (qName.equals("contributor")) {
                 openContributor();
-            } else if (qName == "page") {
+            } else if (qName.equals("page")) {
                 openPage();
             } // rare tags:
-            else if (qName == "mediawiki") {
+            else if (qName.equals("mediawiki")) {
                 openMediaWiki();
-            } else if (qName == "siteinfo") {
+            } else if (qName.equals("siteinfo")) {
                 openSiteinfo();
-            } else if (qName == "namespaces") {
+            } else if (qName.equals("namespaces")) {
                 openNamespaces();
-            } else if (qName == "namespace") {
+            } else if (qName.equals("namespace")) {
                 openNamespace(attributes);
             }
         } catch (IOException e) {
@@ -235,53 +233,53 @@ public class MyXmlDumpReader extends DefaultHandler {
                 return;
             }
             // frequent tags:
-            if (qName == "id") {
+            if (qName.equals("id")) {
                 readId();
-            } else if (qName == "revision") {
+            } else if (qName.equals("revision")) {
                 closeRevision();
-            } else if (qName == "timestamp") {
+            } else if (qName.equals("timestamp")) {
                 readTimestamp();
-            } else if (qName == "text") {
+            } else if (qName.equals("text")) {
                 readText();
-            } else if (qName == "contributor") {
+            } else if (qName.equals("contributor")) {
                 closeContributor();
-            } else if (qName == "username") {
+            } else if (qName.equals("username")) {
                 readUsername();
-            } else if (qName == "ip") {
+            } else if (qName.equals("ip")) {
                 readIp();
-            } else if (qName == "comment") {
+            } else if (qName.equals("comment")) {
                 readComment();
-            } else if (qName == "minor") {
+            } else if (qName.equals("minor")) {
                 readMinor();
-            } else if (qName == "page") {
+            } else if (qName.equals("page")) {
                 closePage();
-            } else if (qName == "title") {
+            } else if (qName.equals("title")) {
                 readTitle();
-            } else if (qName == "restrictions") {
+            } else if (qName.equals("restrictions")) {
                 readRestrictions();
             } // rare tags:
             else if (qName.startsWith("Thread")) {
                 threadAttribute(qName);
-            } else if (qName == "mediawiki") {
+            } else if (qName.equals("mediawiki")) {
                 closeMediaWiki();
-            } else if (qName == "siteinfo") {
+            } else if (qName.equals("siteinfo")) {
                 closeSiteinfo();
-            } else if (qName == "sitename") {
+            } else if (qName.equals("sitename")) {
                 readSitename();
-            } else if (qName == "base") {
+            } else if (qName.equals("base")) {
                 readBase();
-            } else if (qName == "generator") {
+            } else if (qName.equals("generator")) {
                 readGenerator();
-            } else if (qName == "case") {
+            } else if (qName.equals("case")) {
                 readCase();
-            } else if (qName == "namespaces") {
+            } else if (qName.equals("namespaces")) {
                 closeNamespaces();
-            } else if (qName == "namespace") {
+            } else if (qName.equals("namespace")) {
                 closeNamespace();
             }
 //			else throw(SAXException)new SAXException("Unrecognised "+qName+"(substring "+qName.length()+qName.substring(0,6)+")");
         } catch (IOException e) {
-            throw (SAXException) new SAXException(e.getMessage()).initCause(e);
+            throw new SAXException(e);
         }
     }
 

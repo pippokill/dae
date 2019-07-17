@@ -34,7 +34,7 @@
  */
 package di.uniba.dae.test;
 
-import di.uniba.dae.processing.MyDumpWriterV2;
+import di.uniba.dae.processing.MyDumpWriter;
 import di.uniba.dae.processing.MyXmlDumpReader;
 import di.uniba.dae.utils.Utils;
 import java.io.File;
@@ -62,7 +62,7 @@ public class Test {
             File out = new File("/home/pierpaolo/Scaricati/temp/enwiki-20181101-pages-meta-current20.xml-p20254736p21222156.csv.gz");
             bzIn = new BZip2CompressorInputStream(new FileInputStream(in));
             int diff = Utils.getPagesNumbers(in);
-            MyDumpWriterV2 writer = new MyDumpWriterV2(out, diff, true);
+            MyDumpWriter writer = new MyDumpWriter(out, diff, true);
             MyXmlDumpReader reader = new MyXmlDumpReader(bzIn, writer);
             reader.readDump();
         } catch (FileNotFoundException ex) {

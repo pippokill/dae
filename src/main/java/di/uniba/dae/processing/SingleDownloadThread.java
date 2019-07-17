@@ -48,6 +48,9 @@ import java.util.logging.Logger;
  */
 public class SingleDownloadThread extends Thread {
 
+    /**
+     *
+     */
     public static final String END_QUEUE = "###END###";
 
     private final String dumpdate;
@@ -60,6 +63,12 @@ public class SingleDownloadThread extends Thread {
 
     private static final Logger LOG = Logger.getLogger(SingleDownloadThread.class.getName());
 
+    /**
+     *
+     * @param dumpdate
+     * @param queue
+     * @param downloaddir
+     */
     public SingleDownloadThread(String dumpdate, BlockingQueue<String> queue, String downloaddir) {
         this.dumpdate = dumpdate;
         this.queue = queue;

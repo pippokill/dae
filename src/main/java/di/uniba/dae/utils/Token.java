@@ -44,17 +44,32 @@ public class Token {
     
     private String surface;
 
+    /**
+     *
+     */
     public Token() {
     }
 
+    /**
+     *
+     * @param surface
+     */
     public Token(String surface) {
         this.surface = surface;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSurface() {
         return surface;
     }
 
+    /**
+     *
+     * @param surface
+     */
     public void setSurface(String surface) {
         this.surface = surface;
     }

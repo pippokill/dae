@@ -44,15 +44,28 @@ public class AnchorToken extends Token {
 
     private String target;
 
+    /**
+     *
+     * @param surface
+     * @param target
+     */
     public AnchorToken(String surface, String target) {
         super(surface);
         this.target = target;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTarget() {
         return target;
     }
 
+    /**
+     *
+     * @param target
+     */
     public void setTarget(String target) {
         this.target = target;
     }

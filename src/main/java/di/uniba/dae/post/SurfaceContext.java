@@ -47,17 +47,31 @@ public class SurfaceContext {
 
     private final Map<String, Integer> bow = new Object2IntOpenHashMap<>();
 
+    /**
+     *
+     */
     public SurfaceContext() {
     }
     
+    /**
+     *
+     * @param count
+     */
     public SurfaceContext(int count) {
         this.count=count;
     }
 
+    /**
+     *
+     */
     public void incrementCounter() {
         count++;
     }
 
+    /**
+     *
+     * @param word
+     */
     public void addWord(String word) {
         Integer v = bow.get(word);
         if (v == null) {
@@ -67,6 +81,11 @@ public class SurfaceContext {
         }
     }
     
+    /**
+     *
+     * @param word
+     * @param occ
+     */
     public void addWord(String word, int occ) {
         Integer v = bow.get(word);
         if (v == null) {
@@ -76,10 +95,18 @@ public class SurfaceContext {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCount() {
         return count;
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<String, Integer> getBow() {
         return bow;
     }

@@ -58,9 +58,9 @@ import org.apache.commons.cli.ParseException;
  *
  * @author pierpaolo
  */
-public class ProcessMetaDumpMTV3 {
+public class ProcessDump {
 
-    private static final Logger LOG = Logger.getLogger(ProcessMetaDumpMTV3.class.getName());
+    private static final Logger LOG = Logger.getLogger(ProcessDump.class.getName());
 
     static Options options;
 
@@ -126,7 +126,7 @@ public class ProcessMetaDumpMTV3 {
                             t.join();
                         }
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(ProcessMetaDumpMTV3.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ProcessDump.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } catch (IOException ex) {
                     LOG.log(Level.SEVERE, null, ex);
@@ -134,7 +134,7 @@ public class ProcessMetaDumpMTV3 {
                     try {
                         Utils.saveSetInFile(setProcFile, pset);
                     } catch (IOException ex) {
-                        Logger.getLogger(ProcessMetaDumpMTV3.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ProcessDump.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             } else {

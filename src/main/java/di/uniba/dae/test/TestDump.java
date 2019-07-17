@@ -34,7 +34,7 @@
  */
 package di.uniba.dae.test;
 
-import di.uniba.dae.processing.MyDumpWriterV3;
+import di.uniba.dae.processing.MyDumpWriter;
 import di.uniba.dae.processing.MyXmlDumpReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,7 +55,7 @@ public class TestDump {
      */
     public static void main(String[] args) {
         try {
-            MyDumpWriterV3 writer = new MyDumpWriterV3(new File("/home/pierpaolo/Scaricati/temp/download/enwiki-20190201-pages-meta-history13.xml-p6193535p6197594.csv.gz"), 4059, true);
+            MyDumpWriter writer = new MyDumpWriter(new File("/home/pierpaolo/Scaricati/temp/download/enwiki-20190201-pages-meta-history13.xml-p6193535p6197594.csv.gz"), 4059, true);
             BZip2CompressorInputStream bzIn = new BZip2CompressorInputStream(new FileInputStream("/home/pierpaolo/Scaricati/temp/download/enwiki-20190201-pages-meta-history13.xml-p6193535p6197594.bz2"));
             MyXmlDumpReader reader = new MyXmlDumpReader(bzIn, writer);
             reader.readDump();

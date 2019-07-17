@@ -84,6 +84,10 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.sweble.wikitext.engine.PageTitle;
 import org.sweble.wikitext.lazy.LinkTargetException;
 
+/**
+ *
+ * @author pierpaolo
+ */
 public class InternalPlainTextConverter extends AstVisitor {
 
     private final SimpleWikiConfiguration config;
@@ -109,10 +113,19 @@ public class InternalPlainTextConverter extends AstVisitor {
         this.config = config;
     }
 
+    /**
+     *
+     * @param config
+     */
     public InternalPlainTextConverter(SimpleWikiConfiguration config) {
         this.config = config;
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     @Override
     protected boolean before(AstNode node) {
         // This method is called by go() before visitation starts
@@ -120,6 +133,12 @@ public class InternalPlainTextConverter extends AstVisitor {
         return super.before(node);
     }
 
+    /**
+     *
+     * @param node
+     * @param result
+     * @return
+     */
     @Override
     protected Object after(AstNode node, Object result) {
         finishLine();
@@ -130,6 +149,11 @@ public class InternalPlainTextConverter extends AstVisitor {
     }
 
     // =========================================================================
+
+    /**
+     *
+     * @param n
+     */
     public void visit(AstNode n) {
         // Fallback for all nodes that are not explicitly handled below
         //		write("<");
@@ -138,38 +162,70 @@ public class InternalPlainTextConverter extends AstVisitor {
         iterate(n);
     }
 
+    /**
+     *
+     * @param n
+     */
     public void visit(NodeList n) {
         iterate(n);
     }
 
+    /**
+     *
+     * @param p
+     */
     public void visit(Page p) {
         iterate(p.getContent());
     }
 
+    /**
+     *
+     * @param text
+     */
     public void visit(Text text) {
         write(text.getContent());
     }
 
+    /**
+     *
+     * @param w
+     */
     public void visit(Whitespace w) {
         write(" ");
     }
 
+    /**
+     *
+     * @param b
+     */
     public void visit(Bold b) {
         //write("**");
         iterate(b.getContent());
         //write("**");
     }
 
+    /**
+     *
+     * @param i
+     */
     public void visit(Italics i) {
         //write("//");
         iterate(i.getContent());
         //write("//");
     }
 
+    /**
+     *
+     * @param cr
+     */
     public void visit(XmlCharRef cr) {
         write(Character.toChars(cr.getCodePoint()));
     }
 
+    /**
+     *
+     * @param er
+     */
     public void visit(XmlEntityRef er) {
         String ch = EntityReferences.resolve(er.getName());
         if (ch == null) {
@@ -181,12 +237,20 @@ public class InternalPlainTextConverter extends AstVisitor {
         }
     }
 
+    /**
+     *
+     * @param url
+     */
     public void visit(Url url) {
         write(url.getProtocol());
         write(':');
         write(url.getPath());
     }
 
+    /**
+     *
+     * @param link
+     */
     public void visit(ExternalLink link) {
         //TODO How should we represent external links in the plain text output?
         write('[');
@@ -194,6 +258,10 @@ public class InternalPlainTextConverter extends AstVisitor {
         write(']');
     }
 
+    /**
+     *
+     * @param link
+     */
     public void visit(InternalLink link) {
         if (link.getTitle().getContent().size() > 0) {
 
@@ -212,7 +280,7 @@ public class InternalPlainTextConverter extends AstVisitor {
 
         } else {
 
-            //HERE THERE ARE THE INTERNAL LINK WITHOUT THE TARGET!
+            //HERE THERE IS AN INTERNAL LINK WITHOUT THE TARGET!
             //ex. [[anarchism]]
             try {
                 String target = link.getTarget();
@@ -227,6 +295,10 @@ public class InternalPlainTextConverter extends AstVisitor {
         }
     }
 
+    /**
+     *
+     * @param s
+     */
     public void visit(Section s) {
         finishLine();
         iterate(s.getTitle());
@@ -235,17 +307,29 @@ public class InternalPlainTextConverter extends AstVisitor {
         iterate(s.getBody());
     }
 
+    /**
+     *
+     * @param p
+     */
     public void visit(Paragraph p) {
         iterate(p.getContent());
         newline(1);
     }
 
+    /**
+     *
+     * @param hr
+     */
     public void visit(HorizontalRule hr) {
         newline(1);
         //		write(StringUtils.strrep('-', wrapCol));
         //		newline(1);
     }
 
+    /**
+     *
+     * @param e
+     */
     public void visit(XmlElement e) {
         if (e.getName().equalsIgnoreCase("br")) {
             newline(1);
@@ -254,10 +338,18 @@ public class InternalPlainTextConverter extends AstVisitor {
         }
     }
 
+    /**
+     *
+     * @param n
+     */
     public void visit(Itemization n) {
         iterate(n.getContent());
     }
 
+    /**
+     *
+     * @param n
+     */
     public void visit(ItemizationItem n) {
         iterate(n.getContent());
         newline(1);
@@ -265,27 +357,60 @@ public class InternalPlainTextConverter extends AstVisitor {
 
     // =========================================================================
     // Stuff we want to hide
+
+    /**
+     *
+     * @param n
+     */
     public void visit(ImageLink n) {
     }
 
+    /**
+     *
+     * @param n
+     */
     public void visit(IllegalCodePoint n) {
     }
 
+    /**
+     *
+     * @param n
+     */
     public void visit(XmlComment n) {
     }
 
+    /**
+     *
+     * @param n
+     */
     public void visit(Template n) {
     }
 
+    /**
+     *
+     * @param n
+     */
     public void visit(TemplateArgument n) {
     }
 
+    /**
+     *
+     * @param n
+     */
     public void visit(TemplateParameter n) {
     }
 
+    /**
+     *
+     * @param n
+     */
     public void visit(TagExtension n) {
     }
 
+    /**
+     *
+     * @param n
+     */
     public void visit(MagicWord n) {
     }
 

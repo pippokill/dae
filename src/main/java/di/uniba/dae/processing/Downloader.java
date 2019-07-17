@@ -37,6 +37,8 @@ package di.uniba.dae.processing;
 import di.uniba.dae.utils.Utils;
 import java.io.File;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -78,14 +80,17 @@ public class Downloader {
     public static void main(String[] args) {
         TrustManager[] trustAllCerts = new TrustManager[]{
             new X509TrustManager() {
+                @Override
                 public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                     return null;
                 }
 
+                @Override
                 public void checkClientTrusted(
                         java.security.cert.X509Certificate[] certs, String authType) {
                 }
 
+                @Override
                 public void checkServerTrusted(
                         java.security.cert.X509Certificate[] certs, String authType) {
                 }
@@ -96,7 +101,8 @@ public class Downloader {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        } catch (Exception e) {
+        } catch (KeyManagementException | NoSuchAlgorithmException ex) {
+            LOG.log(Level.SEVERE, null, ex);
         }
         try {
             CommandLine cmd = cmdParser.parse(options, args);

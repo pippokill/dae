@@ -37,6 +37,7 @@ package di.uniba.dae.utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -67,10 +68,22 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
  */
 public class Utils {
 
+    /**
+     *
+     * @param url
+     * @param file
+     * @throws IOException
+     */
     public static void downloadFile(URL url, File file) throws IOException {
         FileUtils.copyURLToFile(url, file);
     }
 
+    /**
+     *
+     * @param dumpdate
+     * @return
+     * @throws IOException
+     */
     public static List<String> createDumpList(String dumpdate) throws IOException {
         URL dumpStatusURL = new URL("https://dumps.wikimedia.org/enwiki/" + dumpdate + "/dumpstatus.json");
         String dumpStatusJson = IOUtils.toString(dumpStatusURL);
@@ -93,6 +106,12 @@ public class Utils {
         }
     }
 
+    /**
+     *
+     * @param dumpdate
+     * @return
+     * @throws IOException
+     */
     public static List<DumpItem> createDumpItemList(String dumpdate) throws IOException {
         URL dumpStatusURL = new URL("https://dumps.wikimedia.org/enwiki/" + dumpdate + "/dumpstatus.json");
         String dumpStatusJson = IOUtils.toString(dumpStatusURL);
@@ -117,6 +136,12 @@ public class Utils {
         }
     }
 
+    /**
+     *
+     * @param dir
+     * @return
+     * @throws IOException
+     */
     public static List<DumpItem> createDumpItemList(File dir) throws IOException {
         if (dir.isDirectory()) {
             List<DumpItem> list = new ArrayList<>();
@@ -133,6 +158,13 @@ public class Utils {
         }
     }
 
+    /**
+     *
+     * @param dir
+     * @param logfile
+     * @return
+     * @throws IOException
+     */
     public static List<DumpItem> createDumpItemListFromLog(String dir, File logfile) throws IOException {
         List<File> files = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(logfile));
@@ -154,6 +186,12 @@ public class Utils {
         return list;
     }
 
+    /**
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
     public static Set<String> loadSetFromFile(File file) throws IOException {
         Set<String> set = new HashSet<>();
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -164,6 +202,12 @@ public class Utils {
         return set;
     }
 
+    /**
+     *
+     * @param file
+     * @param set
+     * @throws IOException
+     */
     public static synchronized void saveSetInFile(File file, Set<String> set) throws IOException {
         if (set == null) {
             return;
@@ -176,15 +220,26 @@ public class Utils {
         writer.close();
     }
 
+    /**
+     *
+     * @param dumpfile
+     * @return
+     */
     public static int getPagesNumbers(File dumpfile) {
         String[] pages = dumpfile.getName().split("p");
         int page1 = Integer.valueOf(pages[2]);
-        int page2 = Integer.valueOf(pages[3].split(".bz2")[0]);
+        int page2 = Integer.valueOf(pages[3].split("-|.bz2")[0]);
         int diff = page2 - page1;
         System.out.println("Analyzing " + diff + " pages... \b");
         return diff;
     }
 
+    /**
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
     public static String readTextFile(File file) throws IOException {
         StringBuilder sb = new StringBuilder();
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -195,6 +250,12 @@ public class Utils {
         return sb.toString();
     }
 
+    /**
+     *
+     * @param text
+     * @return
+     * @throws IOException
+     */
     public static List<String> tokenize(String text) throws IOException {
         List<String> list = new ArrayList<>();
         Analyzer a = new StandardAnalyzer(CharArraySet.EMPTY_SET);
@@ -209,6 +270,13 @@ public class Utils {
         return list;
     }
 
+    /**
+     *
+     * @param text
+     * @param a
+     * @return
+     * @throws IOException
+     */
     public static List<String> tokenize(String text, Analyzer a) throws IOException {
         List<String> list = new ArrayList<>();
         TokenStream tokenStream = a.tokenStream("wiki", text);
@@ -222,6 +290,11 @@ public class Utils {
         return list;
     }
 
+    /**
+     *
+     * @param list
+     * @return
+     */
     public static String stringListToString(List<String> list) {
         StringBuilder sb = new StringBuilder();
         if (list.size() > 0) {
@@ -233,10 +306,23 @@ public class Utils {
         return sb.toString();
     }
 
+    /**
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
     public static List<Entry> loadDict(File file) throws IOException {
         return loadDict(file, 0);
     }
 
+    /**
+     *
+     * @param file
+     * @param minocc
+     * @return
+     * @throws IOException
+     */
     public static List<Entry> loadDict(File file, int minocc) throws IOException {
         List<Entry> dict = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -250,6 +336,12 @@ public class Utils {
         return dict;
     }
 
+    /**
+     *
+     * @param b1
+     * @param b2
+     * @return
+     */
     public static double simBow(Map<String, Integer> b1, Map<String, Integer> b2) {
         double sim = 0;
         double n1 = 0;
@@ -271,8 +363,14 @@ public class Utils {
         }
     }
 
+    /**
+     *
+     * @param b1
+     * @param b2
+     * @return
+     */
     public static Map<String, Integer> mergeBow(Map<String, Integer> b1, Map<String, Integer> b2) {
-        Map<String, Integer> b = new HashMap<>(b1);
+        Map<String, Integer> b = new Object2IntOpenHashMap(b1);
         for (Map.Entry<String, Integer> e2 : b2.entrySet()) {
             Integer v = b.get(e2.getKey());
             if (v == null) {
@@ -282,6 +380,10 @@ public class Utils {
             }
         }
         return b;
+    }
+
+    public static boolean isSpecialPage(String title) {
+        return (title.matches(".+[^\\W]:.+"));
     }
 
 }

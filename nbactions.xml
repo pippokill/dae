@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath di.uniba.wikihistory.v2.api.TestSearch</exec.args>
+                <exec.args>-classpath %classpath di.uniba.dae.post.Aggregate -i /home/pierpaolo/Scaricati/temp/dae/20190701/csv -o /home/pierpaolo/Scaricati/temp/dae/20190701/aggregate</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -24,7 +24,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath di.uniba.wikihistory.v2.api.TestSearch</exec.args>
+                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath di.uniba.dae.post.Aggregate -i /home/pierpaolo/Scaricati/temp/dae/20190701/csv -o /home/pierpaolo/Scaricati/temp/dae/20190701/aggregate</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -39,7 +39,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath di.uniba.wikihistory.v2.api.TestSearch</exec.args>
+                <exec.args>-classpath %classpath di.uniba.dae.post.Aggregate -i /home/pierpaolo/Scaricati/temp/dae/20190701/csv -o /home/pierpaolo/Scaricati/temp/dae/20190701/aggregate</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

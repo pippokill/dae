@@ -67,6 +67,16 @@ public class DownloadThread extends Thread {
 
     private static final Logger LOG = Logger.getLogger(DownloadThread.class.getName());
 
+    /**
+     *
+     * @param dumpDate
+     * @param nd
+     * @param dumpList
+     * @param downloadDir
+     * @param tempDir
+     * @param fileReadyQueue
+     * @param nt
+     */
     public DownloadThread(String dumpDate, int nd, List<String> dumpList, String downloadDir, String tempDir, BlockingQueue<File> fileReadyQueue, int nt) {
         this.dumpDate = dumpDate;
         this.nd = nd;

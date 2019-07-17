@@ -46,23 +46,44 @@ public class DumpItem implements Comparable<DumpItem> {
     
     private long size;
 
+    /**
+     *
+     * @param dumpName
+     * @param size
+     */
     public DumpItem(String dumpName, long size) {
         this.dumpName = dumpName;
         this.size = size;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDumpName() {
         return dumpName;
     }
 
+    /**
+     *
+     * @param dumpName
+     */
     public void setDumpName(String dumpName) {
         this.dumpName = dumpName;
     }
 
+    /**
+     *
+     * @return
+     */
     public long getSize() {
         return size;
     }
 
+    /**
+     *
+     * @param size
+     */
     public void setSize(long size) {
         this.size = size;
     }
