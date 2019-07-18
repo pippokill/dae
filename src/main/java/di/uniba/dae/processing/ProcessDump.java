@@ -71,7 +71,8 @@ public class ProcessDump {
         options.addOption("d", true, "Input directory")
                 .addOption("l", true, "Download log")
                 .addOption("o", true, "Output directory")
-                .addOption("t", true, "Number of processing thread (default 4)");
+                .addOption("t", true, "Number of processing thread (default 4)")
+                .addOption("exc", true, "Load exclude file");
     }
 
     /**
@@ -101,6 +102,10 @@ public class ProcessDump {
                         dumpList = Utils.createDumpItemList(downDir);
                     }
                     LOG.log(Level.INFO, "Number of meta files: {0}", dumpList.size());
+                    if (cmd.hasOption("exc")) {
+                        LOG.info("Load exclude file");
+                        pset.addAll(Utils.loadSetFromFile(new File(cmd.getOptionValue("exc"))));
+                    }
                     if (!pset.isEmpty()) {
                         LOG.log(Level.INFO, "Remove processed dumps from list...");
                         for (String fs : pset) {
@@ -108,6 +113,7 @@ public class ProcessDump {
                         }
                         LOG.log(Level.INFO, "Number of meta files: {0}", dumpList.size());
                     }
+                    Collections.sort(dumpList);
                     BlockingQueue<File> queue = new LinkedBlockingQueue<>(dumpList.size() + nt);
                     for (DumpItem item : dumpList) {
                         queue.add(new File(item.getDumpName()));

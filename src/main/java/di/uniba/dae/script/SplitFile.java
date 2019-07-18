@@ -37,7 +37,8 @@ public class SplitFile {
         options.addOption("d", true, "Directory")
                 .addOption("s", true, "Split size")
                 .addOption("e", false, "Delete files")
-                .addOption("t", true, "Number of threads");
+                .addOption("t", true, "Number of threads")
+                .addOption("test", false, "Run test mode");
     }
 
     /**
@@ -52,15 +53,24 @@ public class SplitFile {
                     File[] listFiles = dir.listFiles();
                     long size = Long.parseLong(cmd.getOptionValue("s"));
                     boolean delete = cmd.hasOption("e");
+                    boolean testMode = cmd.hasOption("test");
                     int tn = Integer.parseInt(cmd.getOptionValue("t", "4"));
                     List<Thread> threads = new LinkedList();
                     List<File> files = new LinkedList<>();
                     for (File file : listFiles) {
                         if (file.isFile()) {
                             if (file.length() > size) {
-                                files.add(file);
+                                if (testMode) {
+                                    System.out.println(file.getAbsolutePath());
+                                } else {
+                                    files.add(file);
+                                }
                             }
                         }
+                    }
+                    if (testMode) {
+                        LOG.info("Exit...");
+                        System.exit(0);
                     }
                     for (int i = 0; i < tn; i++) {
                         if (!files.isEmpty()) {
