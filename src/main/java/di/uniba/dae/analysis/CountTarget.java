@@ -40,9 +40,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -99,7 +101,7 @@ public class CountTarget {
                     for (File file : listFiles) {
                         if (file.getName().endsWith(".gz")) {
                             LOG.log(Level.INFO, "Load file: {0}", file.getName());
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file))));
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file)), "UTF-8"));
                             try {
                                 while (reader.ready()) {
                                     String line = reader.readLine();
@@ -144,7 +146,7 @@ public class CountTarget {
                     }
                     Collections.sort(list, Comparator.reverseOrder());
                     File outfile = new File(cmd.getOptionValue("o"));
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(outfile));
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), "UTF-8"));
                     for (Entry e : list) {
                         writer.append(e.getKey()).append("\t").append(String.valueOf(e.getCount()));
                         writer.newLine();

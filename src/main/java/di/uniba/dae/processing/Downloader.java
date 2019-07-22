@@ -71,7 +71,7 @@ public class Downloader {
     static {
         options = new Options();
         options.addOption("d", true, "Dump date (for example 20181101)")
-                .addOption("n", true, "Number of download thread (default 3)");
+                .addOption("n", true, "Number of download threads (default 3)");
     }
 
     /**
@@ -134,7 +134,7 @@ public class Downloader {
                 }
             } else {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("Downloader - Download the whole history dump", options);
+                formatter.printHelp("Downloader - Download the whole history Wikipedia dump", options);
             }
         } catch (ParseException | IOException ex) {
             LOG.log(Level.SEVERE, null, ex);

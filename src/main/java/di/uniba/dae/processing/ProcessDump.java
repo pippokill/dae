@@ -71,7 +71,7 @@ public class ProcessDump {
         options.addOption("d", true, "Input directory")
                 .addOption("l", true, "Download log")
                 .addOption("o", true, "Output directory")
-                .addOption("t", true, "Number of processing thread (default 4)")
+                .addOption("t", true, "Number of processing threads (default 4)")
                 .addOption("exc", true, "Load exclude file");
     }
 
@@ -145,7 +145,7 @@ public class ProcessDump {
                 }
             } else {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("ProcessMetaDumpMTV3 (multi-thread version) - Build CSV files for entities extracted from a Wikipedia dump", options);
+                formatter.printHelp("ProcessDump - Build CSV files for entities extracted from a Wikipedia dump", options);
             }
         } catch (ParseException ex) {
             LOG.log(Level.SEVERE, null, ex);

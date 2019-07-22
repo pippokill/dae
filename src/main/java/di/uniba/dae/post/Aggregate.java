@@ -45,6 +45,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,23 +95,29 @@ public class Aggregate {
                     File outputDir = new File(cmd.getOptionValue("o"));
                     LOG.log(Level.INFO, "Output dir {0}", outputDir.getName());
                     outputDir.mkdirs();
-                    for (File inputFile : inputDir.listFiles()) {
+                    List<File> fileList = Arrays.asList(inputDir.listFiles());
+                    Collections.sort(fileList, new FileSizeComparator());
+                    for (File inputFile : fileList) {
                         File outputFile = new File(cmd.getOptionValue("o") + "/" + inputFile.getName());
                         if (overwrite || !outputFile.exists()) {
-                            process(inputFile, outputFile);
-                            if (delete) {
-                                inputFile.delete();
+                            try {
+                                process(inputFile, outputFile);
+                                if (delete) {
+                                    inputFile.delete();
+                                }
+                            } catch (IOException ioex) {
+                                LOG.log(Level.INFO, "Error in dump {0}", inputFile.getName());
                             }
                         } else {
                             LOG.log(Level.INFO, "Skip file {0}", inputFile.getName());
                         }
                     }
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     LOG.log(Level.SEVERE, null, ex);
                 }
             } else {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("Aggregate data - Build final dataset files aggregating data from CSVs", options);
+                formatter.printHelp("Aggregate data - Build final dataset by aggregating data from CSVs", options);
             }
         } catch (ParseException ex) {
             LOG.log(Level.SEVERE, null, ex);
