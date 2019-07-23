@@ -92,7 +92,7 @@ public class BuildFinalDataset {
                 int min = Integer.parseInt(cmd.getOptionValue("m", "0"));
                 int batchSize = Integer.parseInt(cmd.getOptionValue("b", "10000"));
                 try {
-                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(cmd.getOptionValue("o")))));
+                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(cmd.getOptionValue("o"))), "UTF-8"));
                     List<Entry> dict = Utils.loadDict(new File(cmd.getOptionValue("d")), min);
                     Collections.shuffle(dict);
                     for (int k = 0; k < dict.size(); k += batchSize) {
@@ -113,7 +113,7 @@ public class BuildFinalDataset {
                         for (File file : listFiles) {
                             if (file.getName().endsWith(".gz")) {
                                 LOG.log(Level.INFO, "Load file: {0}", file.getName());
-                                BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file))));
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file)), "UTF-8"));
                                 try {
                                     int year = 0;
                                     while (reader.ready()) {
@@ -143,6 +143,8 @@ public class BuildFinalDataset {
                                                     if (sc == null) {
                                                         sc = new SurfaceContext(Integer.parseInt(split[2 - offsetCorrection])); //surface_counter
                                                         yearMap.put(split[1 - offsetCorrection], sc);
+                                                    } else {
+                                                        sc.incrementCounter(Integer.parseInt(split[2 - offsetCorrection]));
                                                     }
                                                     for (int x = (4 - offsetCorrection); x < split.length; x++) {
                                                         String[] sv = split[x].split(" ");

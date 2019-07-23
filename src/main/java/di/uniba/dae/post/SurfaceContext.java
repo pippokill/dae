@@ -52,13 +52,13 @@ public class SurfaceContext {
      */
     public SurfaceContext() {
     }
-    
+
     /**
      *
      * @param count
      */
     public SurfaceContext(int count) {
-        this.count=count;
+        this.count = count;
     }
 
     /**
@@ -66,6 +66,10 @@ public class SurfaceContext {
      */
     public void incrementCounter() {
         count++;
+    }
+
+    public void incrementCounter(int c) {
+        count += c;
     }
 
     /**
@@ -80,7 +84,7 @@ public class SurfaceContext {
             bow.put(word, v + 1);
         }
     }
-    
+
     /**
      *
      * @param word
@@ -110,7 +114,5 @@ public class SurfaceContext {
     public Map<String, Integer> getBow() {
         return bow;
     }
-    
-    
 
 }
