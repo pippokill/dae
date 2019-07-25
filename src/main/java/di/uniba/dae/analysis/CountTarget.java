@@ -156,7 +156,7 @@ public class CountTarget {
                 }
             } else {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("Count target - count all targets in the dataset", options);
+                formatter.printHelp("Count target - counts all targets in the dataset", options);
             }
         } catch (ParseException ex) {
             LOG.log(Level.SEVERE, null, ex);

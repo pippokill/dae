@@ -73,7 +73,7 @@ public class TestSearch {
      */
     public static void main(String[] args) {
         try {
-            SearchAPI api = new SearchAPI(new File("/media/pierpaolo/82883105-79c9-491a-a404-94ead16bcba2/wikihistory/dataset/index_01032019_1M_5_10000_2"));
+            SearchAPI api = new SearchAPI(new File(args[0]));
             api.open();
             /*
             System.out.println("====2005=====");

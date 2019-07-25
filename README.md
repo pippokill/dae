@@ -57,7 +57,7 @@ For processing the dumps you must run the class **di.uniba.dae.processing.Proces
 
 This tool creates a fold named **csv** into the output directory containing the csv files with information about year, target, surface and context. Read the paper for more details.
 
-You can exclude a list of files from the processing by providing a text file with the filepath for each line. This file must be provided by the option **-exc**. The option **-l** can be used for providing the log of the **Downloader**, in this case, the class processes only files that are successfully downloaded.
+You can exclude a list of files from the processing by providing a text file with the filepath for each line. This file must be provided by the option **-exc**. The option **-l** can be used for providing the log of the **di.uniba.dae.processing.Downloader**, in this case, the class processes only files that are successfully downloaded.
 
 ### Aggregation
 
@@ -73,7 +73,7 @@ For performing the first step you must run the class **di.uniba.dae.post.Aggrega
 
 The **input dir** is the fold that contains CSV files. The option **-w** overwrites existing files into the output dir.
 
-The dataset can be used without the second aggregation step by reading the files produced by the first aggregation step. If you want to perfom the final aggregation step you need to run the class **BuildFinalDataset**.
+The dataset can be used without the second aggregation step by reading the files produced by the first aggregation step. If you want to perfom the final aggregation step you need to run the class **di.uniba.dae.analysis.BuildFinalDataset**.
 
 > usage: Build final dataset<br>
  -b <arg>   Batch size<br>
@@ -85,9 +85,21 @@ The dataset can be used without the second aggregation step by reading the files
 This process requires a lot of memory, for that reason is possible to run the process on a subset of all targets in the dataset, you can provide the subset in a text file using the option **-d** in the form of one target for each line. You can process the dataset using a batch size to avoid the out of memory error. The batch processing divides the dictionary into several batches.
 The **-m** option removes, from the context bag-of-word, words occurring less than the **-m** argument times. 
 
-Pre-processed dataset
-------------------------
+### Pre-processed dataset
 
 You can download the CSV files for the dump *20190201* here: **URL not yet available**.
 
 You can download the final dataset for the dump *20190201* here: **URL not yet available**.
+
+### Dataset indexing
+
+It is possible to index the dataset by using Apache Lucene. For indexing, you can run the class **di.uniba.dae.api.Create Indexing**.
+
+> usage: CreateIndex - Creates the index given the input dataset<br>
+ -i <arg>    Input dateset<br>
+ -mb <arg>   Max context BoW size (default 1000)<br>
+ -mo <arg>   Min token occurrences (default 5)<br>
+ -ms <arg>   Min surface count (default 5)<br>
+ -o <arg>    Index directory
+
+The class **di.uniba.dae.api.TestSearch** shows some example usages of the index for searching and analysing how contexts, surface forms and targets change over time.

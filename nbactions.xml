@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath di.uniba.dae.post.Aggregate -i /home/pierpaolo/Scaricati/temp/dae/20190701/csv -o /home/pierpaolo/Scaricati/temp/dae/20190701/aggregate</exec.args>
+                <exec.args>-classpath %classpath di.uniba.dae.api.CreateIndex -i /media/pierpaolo/82883105-79c9-491a-a404-94ead16bcba2/wikihistory/20190201/dae_dataset_1M.gz -o /media/pierpaolo/82883105-79c9-491a-a404-94ead16bcba2/wikihistory/20190201/dae_dataset_1M_index_5_1000_5 -mo 5 -mb 1000 -ms 5</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -24,7 +24,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath di.uniba.dae.post.Aggregate -i /home/pierpaolo/Scaricati/temp/dae/20190701/csv -o /home/pierpaolo/Scaricati/temp/dae/20190701/aggregate</exec.args>
+                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath di.uniba.dae.api.CreateIndex -i /media/pierpaolo/82883105-79c9-491a-a404-94ead16bcba2/wikihistory/20190201/dae_dataset_1M.gz -o /media/pierpaolo/82883105-79c9-491a-a404-94ead16bcba2/wikihistory/20190201/dae_dataset_1M_index_5_1000_5 -mo 5 -mb 1000 -ms 5</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -39,7 +39,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath di.uniba.dae.post.Aggregate -i /home/pierpaolo/Scaricati/temp/dae/20190701/csv -o /home/pierpaolo/Scaricati/temp/dae/20190701/aggregate</exec.args>
+                <exec.args>-classpath %classpath di.uniba.dae.api.CreateIndex -i /media/pierpaolo/82883105-79c9-491a-a404-94ead16bcba2/wikihistory/20190201/dae_dataset_1M.gz -o /media/pierpaolo/82883105-79c9-491a-a404-94ead16bcba2/wikihistory/20190201/dae_dataset_1M_index_5_1000_5 -mo 5 -mb 1000 -ms 5</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

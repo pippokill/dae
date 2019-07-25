@@ -89,9 +89,9 @@ public class CreateIndex {
         options = new Options();
         options.addOption("i", true, "Input dateset")
                 .addOption("o", true, "Index directory")
-                .addOption("mo", true, "Min token occurrences")
-                .addOption("mb", true, "Max context BoW size")
-                .addOption("ms", true, "Min surface count");
+                .addOption("mo", true, "Min token occurrences (default 5)")
+                .addOption("mb", true, "Max context BoW size (default 1000)")
+                .addOption("ms", true, "Min surface count (default 5)");
     }
 
     private static String buildContextText(String[] split) {
@@ -179,7 +179,7 @@ public class CreateIndex {
                 }
             } else {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("CreateIndex - Create the index for the input dataset", options);
+                formatter.printHelp("CreateIndex - Creates the index given the input dataset", options);
             }
         } catch (ParseException ex) {
             LOG.log(Level.SEVERE, null, ex);
