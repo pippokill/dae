@@ -15,6 +15,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 
@@ -22,7 +24,7 @@ import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream
  *
  * @author pierpaolo
  */
-public class DumpSplitWriter {
+public class FileSplitUtils {
 
     public static void splitDump(File inputfile, long bytes, boolean deleteInput) throws IOException {
         if (inputfile.length() > bytes) {
@@ -36,7 +38,7 @@ public class DumpSplitWriter {
             StringBuilder header = new StringBuilder();
             boolean headerRead = false;
             String line;
-            while ((line = reader.readLine()) !=null) {
+            while ((line = reader.readLine()) != null) {
                 if (!headerRead && !line.trim().equals("<page>")) {
                     header.append(line).append("\n");
                 } else {
@@ -63,12 +65,34 @@ public class DumpSplitWriter {
             }
         }
     }
-    
-    public static void main(String[] args) {
-        try {
-            splitDump(new File("/home/pierpaolo/Scaricati/temp/dae/20190701/download/enwiki-20190701-pages-meta-history10.xml-p2534977p2535598.bz2"), 1024*1024, false);
-        } catch (IOException ex) {
-            Logger.getLogger(DumpSplitWriter.class.getName()).log(Level.SEVERE, null, ex);
+
+    public static void splitMainDataset(File inputfile, long bytes, boolean deleteInput) throws IOException {
+        if (inputfile.length() > bytes) {
+            int part = 1;
+            String name = inputfile.getName();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(inputfile)), "UTF-8"));
+            File outputfile = new File(inputfile.getParent() + "/" + name.replace(".gz", "") + "-" + part + ".gz");
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(outputfile)), "UTF-8"));
+            Logger.getLogger(FileSplitUtils.class.getName()).log(Level.INFO, "Create file: {0}", outputfile.getName());
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("#T")) {
+                    if (outputfile.length() >= bytes) {
+                        writer.close();
+                        part++;
+                        outputfile = new File(inputfile.getParent() + "/" + name.replace(".gz", "") + "-" + part + ".gz");
+                        writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(outputfile)), "UTF-8"));
+                        Logger.getLogger(FileSplitUtils.class.getName()).log(Level.INFO, "Create file: {0}", outputfile.getName());
+                    }
+                }
+                writer.append(line);
+                writer.newLine();
+            }
+            reader.close();
+            writer.close();
+            if (deleteInput) {
+                inputfile.delete();
+            }
         }
     }
 

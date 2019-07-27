@@ -5,7 +5,7 @@
  */
 package di.uniba.dae.script;
 
-import di.uniba.dae.split.DumpSplitWriter;
+import di.uniba.dae.split.FileSplitUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,9 +24,9 @@ import org.apache.commons.cli.ParseException;
  *
  * @author pierpaolo
  */
-public class SplitFile {
+public class SplitDump {
 
-    private static final Logger LOG = Logger.getLogger(SplitFile.class.getName());
+    private static final Logger LOG = Logger.getLogger(SplitDump.class.getName());
 
     static Options options;
 

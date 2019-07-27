@@ -5,7 +5,7 @@
  */
 package di.uniba.dae.script;
 
-import di.uniba.dae.split.DumpSplitWriter;
+import di.uniba.dae.split.FileSplitUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -32,10 +32,10 @@ public class SplitThread extends Thread {
     @Override
     public void run() {
         try {
-            Logger.getLogger(SplitFile.class.getName()).log(Level.INFO, "Split file: {0}, original size: {1}", new Object[]{file.getName(), file.length()});
-            DumpSplitWriter.splitDump(file, size, delete);
+            Logger.getLogger(SplitDump.class.getName()).log(Level.INFO, "Split file: {0}, original size: {1}", new Object[]{file.getName(), file.length()});
+            FileSplitUtils.splitDump(file, size, delete);
         } catch (IOException ex) {
-            Logger.getLogger(SplitFile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SplitDump.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
