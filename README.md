@@ -57,7 +57,7 @@ For processing the dumps you must run the class **di.uniba.dae.processing.Proces
 
 This tool creates a fold named **csv** into the output directory containing the csv files with information about year, target, surface and context. Read the paper for more details.
 
-You can exclude a list of files from the processing by providing a text file with the filepath for each line. This file must be provided by the option **-exc**. The option **-l** can be used for providing the log of the **di.uniba.dae.processing.Downloader**, in this case, the class processes only files that are successfully downloaded.
+You can exclude a list of files from the processing by providing a text file with the filepath for each line. This file must be provided by the option **-exc**. The option **-l** can be used for providing the log of the **di.uniba.dae.processing.Downloader**, in this case, the class processes only files that have been successfully downloaded.
 
 ### Aggregation
 
@@ -87,13 +87,13 @@ The **-m** option removes, from the context bag-of-word, words occurring less th
 
 ### Pre-processed dataset
 
-You can download the CSV files for the dump *20190201* here: **URL not yet available**.
+You can download the aggregated CSV files for the dump *20190201* here: **URL not yet available**.
 
 You can download the final dataset for the dump *20190201* here: **URL not yet available**.
 
 ### Dataset indexing
 
-It is possible to index the dataset by using Apache Lucene. For indexing, you can run the class **di.uniba.dae.api.Create Indexing**.
+It is possible to index the dataset by using Apache Lucene. For indexing, you can run the class **di.uniba.dae.api.CreateIndex**.
 
 > usage: CreateIndex - Creates the index given the input dataset<br>
  -i <arg>    Input dateset<br>
