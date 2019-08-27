@@ -87,7 +87,7 @@ The **-m** option removes, from the context bag-of-word, words occurring less th
 
 ### Pre-processed dataset
 
-You can download the aggregated CSV files for the dump *20190201* here: **URL not yet available**.
+You can download the aggregated CSV files for the dump *20190201* here: https://doi.org/10.5281/zenodo.3353404
 
 You can download the final dataset for the dump *20190201* here: **URL not yet available**.
 
