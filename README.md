@@ -10,7 +10,21 @@ This resource enables the analysis over time of changes in the relations between
 
 This repository contains the code for creating the dataset by exploiting Wikipedia page revisions. Details about the algorithm are published in the following paper:
 
-**BibTex is not yet available**
+> @inproceedings{basile-etal-2019-diachronic,<br>
+    title = "Diachronic Analysis of Entities by Exploiting {W}ikipedia Page revisions",<br>
+    author = "Basile, Pierpaolo  and
+      Caputo, Annalina  and
+      Lawless, Seamus  and
+      Semeraro, Giovanni",<br>
+    booktitle = "Proceedings of the International Conference on Recent Advances in Natural Language Processing (RANLP 2019)",<br>
+    month = sep,<br>
+    year = "2019",<br>
+    address = "Varna, Bulgaria",<br>
+    publisher = "INCOMA Ltd.",<br>
+    url = "https://www.aclweb.org/anthology/R19-1011",<br>
+    doi = "10.26615/978-954-452-056-4_011",<br>
+    pages = "84--91",<br>
+}
 
 Please, cite the paper if you adopt our tool.
 
@@ -73,7 +87,7 @@ For performing the first step you must run the class **di.uniba.dae.post.Aggrega
 
 The **input dir** is the fold that contains CSV files. The option **-w** overwrites existing files into the output dir.
 
-The dataset can be used without the second aggregation step by reading the files produced by the first aggregation step. If you want to perfom the final aggregation step you need to run the class **di.uniba.dae.analysis.BuildFinalDataset**.
+The dataset can be used without the second aggregation step by reading the files produced by the first aggregation step. If you want to perform the final aggregation step you need to run the class **di.uniba.dae.analysis.BuildFinalDataset**.
 
 > usage: Build final dataset<br>
  -b <arg>   Batch size<br>
@@ -83,13 +97,13 @@ The dataset can be used without the second aggregation step by reading the files
  -o <arg>   Output file
 
 This process requires a lot of memory, for that reason is possible to run the process on a subset of all targets in the dataset, you can provide the subset in a text file using the option **-d** in the form of one target for each line. You can process the dataset using a batch size to avoid the out of memory error. The batch processing divides the dictionary into several batches.
-The **-m** option removes, from the context bag-of-word, words occurring less than the **-m** argument times. 
+The **-m** option removes, from the context bag-of-word, words occurring less than the **-m** argument times.
 
 ### Pre-processed dataset
 
 You can download the aggregated CSV files for the dump *20190201* here: https://doi.org/10.5281/zenodo.3353404
 
-You can download the final dataset for the dump *20190201* here: **URL not yet available**.
+For building the final dataset you must run the class **di.uniba.dae.analysis.BuildFinalDataset**.
 
 ### Dataset indexing
 
