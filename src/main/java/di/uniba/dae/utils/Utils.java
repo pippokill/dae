@@ -86,7 +86,7 @@ public class Utils {
      */
     public static List<String> createDumpList(String dumpdate) throws IOException {
         URL dumpStatusURL = new URL("https://dumps.wikimedia.org/enwiki/" + dumpdate + "/dumpstatus.json");
-        String dumpStatusJson = IOUtils.toString(dumpStatusURL);
+        String dumpStatusJson = IOUtils.toString(dumpStatusURL, "utf-8");
         JsonElement jelement = new JsonParser().parse(dumpStatusJson);
         JsonObject jobject = jelement.getAsJsonObject();
         jobject = jobject.get("jobs").getAsJsonObject().get("metahistorybz2dump").getAsJsonObject();
@@ -114,7 +114,7 @@ public class Utils {
      */
     public static List<DumpItem> createDumpItemList(String dumpdate) throws IOException {
         URL dumpStatusURL = new URL("https://dumps.wikimedia.org/enwiki/" + dumpdate + "/dumpstatus.json");
-        String dumpStatusJson = IOUtils.toString(dumpStatusURL);
+        String dumpStatusJson = IOUtils.toString(dumpStatusURL, "utf-8");
         JsonElement jelement = new JsonParser().parse(dumpStatusJson);
         JsonObject jobject = jelement.getAsJsonObject();
         jobject = jobject.get("jobs").getAsJsonObject().get("metahistorybz2dump").getAsJsonObject();
